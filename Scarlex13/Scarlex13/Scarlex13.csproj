@@ -7,10 +7,25 @@
     <ProjectGuid>{71328EE0-A76C-42DC-A135-98F1B2A46565}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scarlex13</RootNamespace>
+    <RootNamespace>Progressive.Scarlex13</RootNamespace>
     <AssemblyName>Scarlex13</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,13 +68,88 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="README.md" />
+    <None Include="resources\miss.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib\DxLib.dll" />
-    <Content Include="lib\DxLibDotNet.dll" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Domains\Entities\Enemy.cs" />
+    <Compile Include="Domains\Entities\Player.cs" />
+    <Compile Include="Domains\Entities\ShootingGame.cs" />
+    <Compile Include="Domains\Entities\ShootingWorld.cs" />
+    <Compile Include="Domains\ValueObjects\Input.cs" />
+    <Compile Include="Domains\ValueObjects\Point.cs" />
     <Compile Include="DxDLL.cs" />
+    <Compile Include="Infrastructures\DxLibraryBase.cs" />
+    <Compile Include="Infrastructures\Renderer.cs" />
+    <Compile Include="Infrastructures\Messaging.cs" />
+    <Compile Include="Infrastructures\RealtimeInput.cs" />
+    <Compile Include="Infrastructures\SoundManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scarlex13.cs" />
+    <Compile Include="UserInterfaces\Commons\ValueObjects\Color.cs" />
+    <Compile Include="UserInterfaces\Commons\ValueObjects\Size.cs" />
+    <Compile Include="UserInterfaces\Games\ShootingGameView.cs" />
+    <Compile Include="UserInterfaces\Logos\Logo.cs" />
+    <Compile Include="UserInterfaces\Titles\Title.cs" />
+    <Compile Include="UserInterfaces\UserInterface.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DxLib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\back.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\marisa.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\nazoorin.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\aya.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\remilia.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\title1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\title2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\reimu.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Applications\" />
+    <Folder Include="Domains\Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 および x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
