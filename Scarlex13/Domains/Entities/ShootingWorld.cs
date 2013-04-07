@@ -14,12 +14,14 @@ namespace Progressive.Scarlex13.Domains.Entities
         private readonly List<Shot> _shots = new List<Shot>();
 
         public event EventHandler Cleared;
+        public event EventHandler Failed;
 
         public ShootingWorld(IReadOnlyList<Enemy> enemies)
         {
             _enemies = enemies;
             _player.Shot += (sender, args) =>
                 _playerShots.Add(new Shot(8, _player.Point.Shift(0, -17)));
+            _player.Died += (sender, args) => Failed(this, EventArgs.Empty);
             foreach (Enemy enemy in _enemies)
             {
                 enemy.Shot += (sender, args) =>

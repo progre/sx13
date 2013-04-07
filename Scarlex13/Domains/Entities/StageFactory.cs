@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Progressive.Scarlex13.Domains.ValueObjects;
+using System.Linq;
 
 namespace Progressive.Scarlex13.Domains.Entities
 {
-    internal class EnemiesFactory
+    internal class StageFactory
     {
-        public IReadOnlyList<IReadOnlyList<Enemy>> FromData(String data)
+        private Tuple<EnemyType, Point>[][] _stages;
+
+        public static StageFactory FromData(String data)
         {
             var list = new List<object>();
             var queue = new Queue<char>();
@@ -27,8 +30,8 @@ namespace Progressive.Scarlex13.Domains.Entities
 
             var rnd = new Random();
 
-            var stage = new List<Enemy[]>();
-            var enemies = new List<Enemy>();
+            var stages = new List<Tuple<EnemyType, Point>[]>();
+            var enemies = new List<Tuple<EnemyType, Point>>();
             var enemy = new List<int>(3);
             foreach (object o in list)
             {
@@ -47,7 +50,7 @@ namespace Progressive.Scarlex13.Domains.Entities
                     continue;
                 if (enemy.Count == 0 && enemies.Count > 0)
                 {
-                    stage.Add(enemies.ToArray());
+                    stages.Add(enemies.ToArray());
                     enemies.Clear();
                     continue;
                 }
@@ -56,13 +59,36 @@ namespace Progressive.Scarlex13.Domains.Entities
                     enemy.Clear();
                     continue;
                 }
-                enemies.Add(new Enemy(
+                enemies.Add(Tuple.Create(
                     ToEnemyType(enemy[0]),
-                    new Point((short)enemy[1], (short)enemy[2]),
-                    new Random(rnd.Next())));
+                    new Point((short)enemy[1], (short)enemy[2])));
                 enemy.Clear();
             }
-            return stage.ToArray();
+            return new StageFactory(stages.ToArray());
+        }
+
+        private StageFactory(Tuple<EnemyType, Point>[][] stages)
+        {
+            _stages = stages;
+        }
+
+        public IReadOnlyList<Enemy> GetEnemies(int stageNo)
+        {
+            var rnd = new Random();
+            return _stages[stageNo]
+                .Select(x => new Enemy(
+                    x.Item1,
+                    x.Item2,
+                    new Random(rnd.Next())))
+                .ToArray();
+        }
+
+        public int LastStage
+        {
+            get
+            {
+                return _stages.Length - 1;
+            }
         }
 
         private static bool IsNumber(char c)

@@ -83,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domains\Entities\Character.cs" />
-    <Compile Include="Domains\Entities\EnemiesFactory.cs" />
+    <Compile Include="Domains\Entities\StageFactory.cs" />
     <Compile Include="Domains\Entities\Enemy.cs" />
     <Compile Include="Domains\Entities\Player.cs" />
     <Compile Include="Domains\Entities\ShootingGame.cs" />
