@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Progressive.Scarlex13.Domains.ValueObjects
+﻿namespace Progressive.Scarlex13.Domains.ValueObjects
 {
-    struct Point
+    internal struct Point
     {
+        public const int Width = 500;
+        public const int Height = 500;
+
         public short X;
         public short Y;
 
@@ -15,6 +12,11 @@ namespace Progressive.Scarlex13.Domains.ValueObjects
         {
             X = x;
             Y = y;
+        }
+
+        public Point Shift(int x, int y)
+        {
+            return new Point((short)(X + x), (short)(Y + y));
         }
     }
 }

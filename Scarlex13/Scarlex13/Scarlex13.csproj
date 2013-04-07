@@ -69,19 +69,32 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="README.md" />
+    <None Include="resources\explosion.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="resources\miss.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="resources\shot.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="resources\warp.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domains\Entities\Character.cs" />
+    <Compile Include="Domains\Entities\EnemiesFactory.cs" />
     <Compile Include="Domains\Entities\Enemy.cs" />
     <Compile Include="Domains\Entities\Player.cs" />
     <Compile Include="Domains\Entities\ShootingGame.cs" />
     <Compile Include="Domains\Entities\ShootingWorld.cs" />
+    <Compile Include="Domains\Entities\Shot.cs" />
     <Compile Include="Domains\ValueObjects\Input.cs" />
     <Compile Include="Domains\ValueObjects\Point.cs" />
     <Compile Include="DxDLL.cs" />
     <Compile Include="Infrastructures\DxLibraryBase.cs" />
+    <Compile Include="Infrastructures\File.cs" />
     <Compile Include="Infrastructures\Renderer.cs" />
     <Compile Include="Infrastructures\Messaging.cs" />
     <Compile Include="Infrastructures\RealtimeInput.cs" />
@@ -90,7 +103,10 @@
     <Compile Include="Scarlex13.cs" />
     <Compile Include="UserInterfaces\Commons\ValueObjects\Color.cs" />
     <Compile Include="UserInterfaces\Commons\ValueObjects\Size.cs" />
+    <Compile Include="UserInterfaces\Games\BackgroundView.cs" />
     <Compile Include="UserInterfaces\Games\ShootingGameView.cs" />
+    <Compile Include="UserInterfaces\Games\ShootingWorldView.cs" />
+    <Compile Include="UserInterfaces\Games\Star.cs" />
     <Compile Include="UserInterfaces\Logos\Logo.cs" />
     <Compile Include="UserInterfaces\Titles\Title.cs" />
     <Compile Include="UserInterfaces\UserInterface.cs" />
@@ -102,22 +118,40 @@
     <Content Include="DxLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\aya.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\back.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\marisa.bmp">
+    <Content Include="resources\bgm.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\nazoorin.bmp">
+    <Content Include="resources\explosion.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\aya.bmp">
+    <Content Include="resources\marisa.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\remilia.bmp">
+    <Content Include="resources\nazoorin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\reimu.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\remilia.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\shot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\stage.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\tewi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\title1.png">
@@ -126,14 +160,8 @@
     <Content Include="resources\title2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\reimu.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Applications\" />
-    <Folder Include="Domains\Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using DxLibDLL;
 using Progressive.Scarlex13.Domains.ValueObjects;
 using Progressive.Scarlex13.UserInterfaces.Commons.ValueObjects;
@@ -117,6 +116,16 @@ namespace Progressive.Scarlex13.Infrastructures
         public void DrawText(string text, Point point, Color color)
         {
             DX.DrawString(point.X, point.Y, text, ToDxColor(color));
+        }
+
+        public void DrawPixel(Point point, Color color)
+        {
+            DX.DrawPixel(point.X, point.Y, ToDxColor(color));
+        }
+
+        public void DrawLine(Point from, Point to, Color color)
+        {
+            DX.DrawLine(from.X, from.Y, to.X, to.Y, ToDxColor(color));
         }
 
         private static int ToDxColor(Color color)

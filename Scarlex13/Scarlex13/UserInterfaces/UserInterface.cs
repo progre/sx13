@@ -21,8 +21,16 @@ namespace Progressive.Scarlex13.UserInterfaces
 
         public UserInterface()
         {
-            _view = new ShootingGameView(_game) { Renderer = _renderer };
-            _title = new Title { Renderer = _renderer, SoundManager = _soundManager };
+            _view = new ShootingGameView(_game)
+            {
+                Renderer = _renderer,
+                SoundManager = _soundManager
+            };
+            _title = new Title
+            {
+                Renderer = _renderer,
+                SoundManager = _soundManager
+            };
         }
 
         public void Main()
