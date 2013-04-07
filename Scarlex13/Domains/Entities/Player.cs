@@ -5,20 +5,36 @@ namespace Progressive.Scarlex13.Domains.Entities
 {
     internal class Player : Character
     {
+        private const int EnemyArea = 180;
         private const short Speed = 3;
+        private bool _firstTime = true;
         private int _reloadTime;
         public event EventHandler Shot;
 
         public void Update(Input input, bool canShot)
         {
             base.Update();
-            if (Life == 0)
+            if (Life <= 0)
                 return;
-            if (input.DirectionToggled)
-                Direction = input.Direction;
+            byte direction;
+            bool shot;
+            if (_firstTime)
+            {
+                direction = input.Direction;
+                shot = input.Shot;
+                _firstTime = false;
+            }
+            else
+            {
+                direction = input.DirectionToggled ? input.Direction : (byte)0;
+                shot = input.ShotToggled && input.Shot;
+            }
+
+            if (direction > 0)
+                Direction = direction;
             if (_reloadTime == 0)
             {
-                if (canShot && input.ShotToggled && input.Shot)
+                if (canShot && shot)
                 {
                     Shot(this, EventArgs.Empty);
                     _reloadTime = 8;
@@ -55,8 +71,8 @@ namespace Progressive.Scarlex13.Domains.Entities
                     _point.Y += Speed;
                     break;
             }
-            if (_point.Y < 140)
-                _point.Y = 140;
+            if (_point.Y < EnemyArea)
+                _point.Y = EnemyArea;
             if (_point.Y >= Point.Height - SafeArea)
                 _point.Y = Point.Height - SafeArea - 1;
             if (_point.X >= Point.Width - SafeArea)
