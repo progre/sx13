@@ -29,20 +29,23 @@ namespace Progressive.Scarlex13.UserInterfaces.Titles
 
             if (!_ranking)
             {
-                switch (input.Direction)
+                if (input.DirectionToggled)
                 {
-                    case 2:
-                        _selection++;
-                        if (_selection > 2)
-                            _selection = 0;
-                        break;
-                    case 8:
-                        _selection--;
-                        if (_selection < 0)
-                            _selection = 2;
-                        break;
+                    switch (input.Direction)
+                    {
+                        case 2:
+                            _selection++;
+                            if (_selection > 2)
+                                _selection = 0;
+                            break;
+                        case 8:
+                            _selection--;
+                            if (_selection < 0)
+                                _selection = 2;
+                            break;
+                    }
                 }
-                if (input.Shot == true)
+                if (input.ShotToggled && input.Shot)
                 {
                     switch (_selection)
                     {
@@ -60,7 +63,7 @@ namespace Progressive.Scarlex13.UserInterfaces.Titles
             }
             else
             {
-                if (input.Shot == true)
+                if (input.ShotToggled && input.Shot)
                     _ranking = false;
             }
 

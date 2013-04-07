@@ -10,16 +10,22 @@ namespace Progressive.Scarlex13.Domains.ValueObjects
     {
         public readonly byte Direction;
         public readonly bool DirectionToggled;
-        public readonly bool? Shot;
+        public readonly bool Shot;
         public readonly bool ShotToggled;
-        public readonly bool? Pause;
+        public readonly bool Pause;
         public readonly bool PauseToggled;
 
-        public Input(byte direction, bool? shot, bool? pause)
+        public Input(
+            byte direction, bool directionToggled,
+            bool shot, bool shotToggled,
+            bool pause, bool pauseToggled)
         {
             Direction = direction;
+            DirectionToggled = directionToggled;
             Shot = shot;
+            ShotToggled = shotToggled;
             Pause = pause;
+            PauseToggled = pauseToggled;
         }
     }
 }

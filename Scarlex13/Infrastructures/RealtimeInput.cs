@@ -12,22 +12,25 @@ namespace Progressive.Scarlex13.Infrastructures
         public Input GetInput()
         {
             int flag = DX.GetJoypadInputState(DX.DX_INPUT_KEY_PAD1);
+
             byte nextDirection = GetDirection(flag);
-            bool? nextShot = (flag & DX.PAD_INPUT_1) > 0;
-            bool? nextPause = (flag & DX.PAD_INPUT_2) > 0;
-            if (_prevDirection != nextDirection)
-                _prevDirection = nextDirection;
-            else
-                nextDirection = 0;
-            if (_prevShot != nextShot)
-                _prevShot = nextShot.Value;
-            else
-                nextShot = null;
-            if (_prevPause != nextPause)
-                _prevPause = nextPause.Value;
-            else
-                nextPause = null;
-            return new Input(nextDirection, nextShot, nextPause);
+            var directionChanged = _prevDirection != nextDirection;
+
+            var nextShot = (flag & DX.PAD_INPUT_1) > 0;
+            var shotToggled = _prevShot != nextShot;
+
+            var nextPause = (flag & DX.PAD_INPUT_2) > 0;
+            var pauseToggled = _prevPause != nextPause;
+
+            var nextInput = new Input(
+                nextDirection, directionChanged,
+                nextShot, shotToggled,
+                nextPause, pauseToggled);
+
+            _prevDirection = nextDirection;
+            _prevShot = nextShot;
+            _prevPause = nextPause;
+            return nextInput;
         }
 
         private static byte GetDirection(int dxPadInputState)

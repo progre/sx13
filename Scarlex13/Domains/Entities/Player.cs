@@ -14,11 +14,11 @@ namespace Progressive.Scarlex13.Domains.Entities
             base.Update();
             if (Life == 0)
                 return;
-            if (input.Direction != 0)
+            if (input.DirectionToggled)
                 Direction = input.Direction;
             if (_reloadTime == 0)
             {
-                if (canShot && input.Shot == true)
+                if (canShot && input.ShotToggled && input.Shot)
                 {
                     Shot(this, EventArgs.Empty);
                     _reloadTime = 8;
