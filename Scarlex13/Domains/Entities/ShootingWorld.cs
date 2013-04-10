@@ -52,6 +52,17 @@ namespace Progressive.Scarlex13.Domains.Entities
             get { return _shots.Concat(_playerShots); }
         }
 
+        public int AllHitCount
+        {
+            get 
+            {
+                return _enemies.Sum(
+                    x => x.Type == EnemyType.Silver
+                    || x.Type == EnemyType.Gold
+                    ? 2 : 1);
+            }
+        }
+
         public void Update(Input input)
         {
             Player.Update(input, _playerShots.Count < 7);

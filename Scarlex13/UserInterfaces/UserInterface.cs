@@ -5,12 +5,14 @@ using Progressive.Scarlex13.Infrastructures;
 using Progressive.Scarlex13.UserInterfaces.Games;
 using Progressive.Scarlex13.UserInterfaces.Logos;
 using Progressive.Scarlex13.UserInterfaces.Titles;
+using Progressive.Scarlex13.Domains.Applications;
 
 namespace Progressive.Scarlex13.UserInterfaces
 {
     internal class UserInterface
     {
         private readonly ShootingGame _game = new ShootingGame();
+        private readonly StageEditor _stageEditor = new StageEditor();
         private readonly RealtimeInput _input = new RealtimeInput();
         private readonly Logo _logo = new Logo();
         private readonly Renderer _renderer = new Renderer();
@@ -58,6 +60,11 @@ namespace Progressive.Scarlex13.UserInterfaces
                 _current = DoGame;
                 return true;
             }
+            if (_title.Edit)
+            {
+                _current = DoEditor;
+                return true;
+            }
             return !_title.Exit;
         }
 
@@ -67,6 +74,11 @@ namespace Progressive.Scarlex13.UserInterfaces
             _game.Update(input);
             _view.Render();
             _renderer.Flip();
+            return true;
+        }
+
+        private bool DoEditor()
+        {
             return true;
         }
     }

@@ -82,6 +82,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domains\Applications\StageEditor.cs" />
     <Compile Include="Domains\Entities\Character.cs" />
     <Compile Include="Domains\Entities\StageFactory.cs" />
     <Compile Include="Domains\Entities\Enemy.cs" />

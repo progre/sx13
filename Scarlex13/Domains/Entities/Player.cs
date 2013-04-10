@@ -11,6 +11,8 @@ namespace Progressive.Scarlex13.Domains.Entities
         private int _reloadTime;
         public event EventHandler Shot;
 
+        public int ShotCount { get; private set; }
+
         public void Update(Input input, bool canShot)
         {
             base.Update();
@@ -37,6 +39,7 @@ namespace Progressive.Scarlex13.Domains.Entities
                 if (canShot && shot)
                 {
                     Shot(this, EventArgs.Empty);
+                    ShotCount++;
                     _reloadTime = 8;
                 }
             }

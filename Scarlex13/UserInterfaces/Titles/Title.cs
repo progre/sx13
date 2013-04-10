@@ -6,6 +6,7 @@ namespace Progressive.Scarlex13.UserInterfaces.Titles
 {
     internal class Title
     {
+        private const bool DebugMode = true;
         private const int Scene1 = 10;
         private const int Scene2 = 80;
         private const int Scene3 = 20;
@@ -16,10 +17,16 @@ namespace Progressive.Scarlex13.UserInterfaces.Titles
         public Renderer Renderer { private get; set; }
         public SoundManager SoundManager { private get; set; }
         public bool Start { get; private set; }
+        public bool Edit { get; private set; }
         public bool Exit { get; private set; }
 
         public void Render(Input input)
         {
+            if (DebugMode && input.Pause)
+            {
+                Edit = true;
+                return;
+            }
             _time++;
             if (_time < Scene1 + Scene2 + Scene3)
             {
