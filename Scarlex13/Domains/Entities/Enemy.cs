@@ -101,7 +101,7 @@ namespace Progressive.Scarlex13.Domains.Entities
                         || Type == EnemyType.Silver)
                     {
                         double radian = GetRadian(Point, playerPoint);
-                        switch (Direction)
+                        switch (Direction.Value)
                         {
 
                         }
@@ -131,7 +131,7 @@ namespace Progressive.Scarlex13.Domains.Entities
 
         private void TurnMove()
         {
-            switch (Direction)
+            switch (Direction.Value)
             {
                 case 8:
                     _point.Y -= Speed;

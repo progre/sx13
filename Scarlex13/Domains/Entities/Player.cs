@@ -33,7 +33,7 @@ namespace Progressive.Scarlex13.Domains.Entities
             }
 
             if (direction > 0)
-                Direction = direction;
+                Direction = new Direction8(direction);
             if (_reloadTime == 0)
             {
                 if (canShot && shot)
@@ -48,7 +48,7 @@ namespace Progressive.Scarlex13.Domains.Entities
                 _reloadTime--;
             }
 
-            switch (Direction)
+            switch (Direction.Value)
             {
                 case 7:
                 case 4:
@@ -61,7 +61,7 @@ namespace Progressive.Scarlex13.Domains.Entities
                     _point.X += Speed;
                     break;
             }
-            switch (Direction)
+            switch (Direction.Value)
             {
                 case 7:
                 case 8:

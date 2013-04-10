@@ -117,7 +117,7 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
         private void RenderEnemy(Enemy enemy)
         {
             Tuple<string, int, int> resource = ToResource(enemy.Type);
-            switch (enemy.Direction)
+            switch (enemy.Direction.Value)
             {
                 case 5:
                 case 8:

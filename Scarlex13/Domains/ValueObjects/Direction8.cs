@@ -8,7 +8,8 @@ namespace Progressive.Scarlex13.Domains.ValueObjects
 {
     struct Direction8
     {
-        private readonly byte[] Directions = { 8, 9, 6, 3, 2, 1, 4, 7 };
+        private static readonly byte[] Directions
+            = new byte[] { 8, 9, 6, 3, 2, 1, 4, 7 };
         private readonly byte _value;
 
         public Direction8(byte value)
@@ -16,24 +17,26 @@ namespace Progressive.Scarlex13.Domains.ValueObjects
             _value = value;
         }
 
+        public byte Value { get { return _value; } }
+
         public static Direction8 FromRadian(double rad)
         {
             // Math.PIがconstだからコンパイル時に"rad < (定数)"になってくれる筈
             // 無理ならMath.PI / 8を先に計算する
-            if (rad < Math.PI / 8) return 6;
-            if (rad < Math.PI * 3 / 8) return 3;
-            if (rad < Math.PI * 5 / 8) return 2;
-            if (rad < Math.PI * 7 / 8) return 7;
-            if (rad < Math.PI * 9 / 8) return 4;
-            if (rad < Math.PI * 11 / 8) return 1;
-            if (rad < Math.PI * 13 / 8) return 2;
-            if (rad < Math.PI * 15 / 8) return 3;
+            if (rad < Math.PI / 8) return new Direction8(6);
+            if (rad < Math.PI * 3 / 8) return new Direction8(3);
+            if (rad < Math.PI * 5 / 8) return new Direction8(2);
+            if (rad < Math.PI * 7 / 8) return new Direction8(7);
+            if (rad < Math.PI * 9 / 8) return new Direction8(4);
+            if (rad < Math.PI * 11 / 8) return new Direction8(1);
+            if (rad < Math.PI * 13 / 8) return new Direction8(2);
+            if (rad < Math.PI * 15 / 8) return new Direction8(3);
             return new Direction8(6);
         }
 
         public Direction8 TurnLeft()
         {
-            int index = Array.IndexOf(Directions, value) + 1;
+            int index = Array.IndexOf(Directions, _value) + 1;
             if (index >= Directions.Length)
                 index -= Directions.Length;
             return new Direction8(Directions[index]);
@@ -41,7 +44,7 @@ namespace Progressive.Scarlex13.Domains.ValueObjects
 
         public Direction8 TurnRight()
         {
-            int index = Array.IndexOf(Directions, value) - 1;
+            int index = Array.IndexOf(Directions, _value) - 1;
             if (index < 0)
                 index += Directions.Length;
             return new Direction8(Directions[index]);

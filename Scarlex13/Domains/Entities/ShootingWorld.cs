@@ -20,7 +20,8 @@ namespace Progressive.Scarlex13.Domains.Entities
         {
             _enemies = enemies;
             _player.Shot += (sender, args) =>
-                _playerShots.Add(new Shot(8, _player.Point.Shift(0, -17)));
+                _playerShots.Add(new Shot(
+                    new Direction8(8), _player.Point.Shift(0, -17)));
             _player.Died += (sender, args) => Failed(this, EventArgs.Empty);
             foreach (Enemy enemy in _enemies)
             {
