@@ -5,13 +5,17 @@ namespace Progressive.Scarlex13.Domains.Entities
 {
     internal class Shot
     {
-        public readonly Direction8 Direction;
+        public Direction8 Direction;
         private Point _point;
+        private bool _homing;
+        private int _homingState;
+        private int _frame;
 
-        public Shot(Direction8 direction, Point point)
+        public Shot(Direction8 direction, Point point, bool homing)
         {
             Direction = direction;
             _point = point;
+            _homing = homing;
         }
 
         public Point Point
@@ -19,8 +23,32 @@ namespace Progressive.Scarlex13.Domains.Entities
             get { return _point; }
         }
 
-        public void Update()
+        public void Update(Point playerPoint)
         {
+            if (_homing)
+            {
+                switch (_homingState)
+                {
+                    case 0:
+                        if (_point.Y >= playerPoint.Y)
+                        {
+                            Direction = new Direction8(2);
+                            _homingState = 1;
+                        }
+                        break;
+                    case 1:
+                        _frame++;
+                        if (_frame <= 30)
+                        {
+                            return;
+                        }
+                        Direction = new Direction8(
+                            (byte)(Point.X < playerPoint.X ? 6 : 4));
+                        _homingState = 2;
+                        break;
+                }
+            }
+
             const int speed = 5;
             const int skewSpeed = (short)(speed / 1.41421356);
             switch (Direction.Value)

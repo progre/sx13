@@ -21,13 +21,13 @@ namespace Progressive.Scarlex13.Domains.Entities
             _enemies = enemies;
             _player.Shot += (sender, args) =>
                 _playerShots.Add(new Shot(
-                    new Direction8(8), _player.Point.Shift(0, -17)));
+                    new Direction8(8), _player.Point.Shift(0, -17), false));
             _player.Died += (sender, args) => Failed(this, EventArgs.Empty);
             foreach (Enemy enemy in _enemies)
             {
                 enemy.Shot += (sender, args) =>
                     _shots.Add(new Shot(((Enemy)sender).Direction,
-                        ((Enemy)sender).Point));
+                        ((Enemy)sender).Point, enemy.Type == EnemyType.Silver));
                 enemy.Determined += (sender, args) =>
                 {
                     if (_enemies.All(x => x.Life == -1))
@@ -73,7 +73,7 @@ namespace Progressive.Scarlex13.Domains.Entities
             }
             foreach (Shot shot in _playerShots.ToArray())
             {
-                shot.Update();
+                shot.Update(_player.Point);
                 if (IsOutOfStage(shot))
                 {
                     _playerShots.Remove(shot);
@@ -87,7 +87,7 @@ namespace Progressive.Scarlex13.Domains.Entities
             }
             foreach (Shot shot in _shots.ToArray())
             {
-                shot.Update();
+                shot.Update(_player.Point);
                 if (IsOutOfStage(shot))
                 {
                     _shots.Remove(shot);
