@@ -23,15 +23,15 @@ namespace Progressive.Scarlex13.Domains.ValueObjects
         {
             // Math.PIがconstだからコンパイル時に"rad < (定数)"になってくれる筈
             // 無理ならMath.PI / 8を先に計算する
+            if (rad < -Math.PI * 7 / 8) return new Direction8(7);
+            if (rad < -Math.PI * 5 / 8) return new Direction8(8);
+            if (rad < -Math.PI * 3 / 8) return new Direction8(9);
             if (rad < Math.PI / 8) return new Direction8(6);
             if (rad < Math.PI * 3 / 8) return new Direction8(3);
             if (rad < Math.PI * 5 / 8) return new Direction8(2);
-            if (rad < Math.PI * 7 / 8) return new Direction8(7);
+            if (rad < Math.PI * 7 / 8) return new Direction8(1);
             if (rad < Math.PI * 9 / 8) return new Direction8(4);
-            if (rad < Math.PI * 11 / 8) return new Direction8(1);
-            if (rad < Math.PI * 13 / 8) return new Direction8(2);
-            if (rad < Math.PI * 15 / 8) return new Direction8(3);
-            return new Direction8(6);
+            return new Direction8(7);
         }
 
         public Direction8 TurnLeft()

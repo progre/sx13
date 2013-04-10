@@ -82,10 +82,7 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
 
         private void RenderCharactors(ShootingWorld world)
         {
-            foreach (Shot shot in world.Shots)
-            {
-                Renderer.Draw("shot.png", new Point((short)(shot.Point.X - 1), shot.Point.Y));
-            }
+            RenderShots(world.Shots);
             foreach (Enemy enemy in world.Enemies)
             {
                 if (enemy.Life > 0)
@@ -111,6 +108,45 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
                 int frame = _dieFrame[player];
                 _dieFrame[player] = ++frame;
                 RenderExplosion(player.Point, frame, false);
+            }
+        }
+
+        private void RenderShots(IEnumerable<Shot> shots)
+        {
+            foreach (Shot shot in shots)
+            {
+                Point point = new Point(
+                            (short)(shot.Point.X - 1),shot.Point.Y);
+                switch (shot.Direction.Value)
+                {
+                    case 8:
+                        Renderer.Draw("shot.png", point);
+                        break;
+                    case 9:
+                        Renderer.DrawRotate("shot.png", point, Math.PI / 4);
+                        break;
+                    case 6:
+                        Renderer.DrawRotate("shot.png", point, Math.PI / 2);
+                        break;
+                    case 3:
+                        Renderer.DrawRotate("shot.png", point, Math.PI * 3 / 4);
+                        break;
+                    case 2:
+                        Renderer.DrawRotate("shot.png", point, Math.PI);
+                        break;
+                    case 1:
+                        Renderer.DrawRotate("shot.png", point, Math.PI * 5 / 4);
+                        break;
+                    case 4:
+                        Renderer.DrawRotate("shot.png", point, Math.PI * 3 / 2);
+                        break;
+                    case 7:
+                        Renderer.DrawRotate("shot.png", point, Math.PI * 7 / 4);
+                        break;
+                    default:
+                        break;
+                }
+
             }
         }
 

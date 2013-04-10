@@ -97,6 +97,15 @@ namespace Progressive.Scarlex13.Infrastructures
             DX.DrawGraph(point.X, point.Y, _handles[fileName], DX.TRUE);
         }
 
+        public void DrawRotate(string fileName, Point point, double angle)
+        {
+            if (!_handles.ContainsKey(fileName))
+                Load(fileName);
+
+            DX.DrawRotaGraph(point.X, point.Y,
+                1.0, angle, _handles[fileName], DX.TRUE);
+        }
+
         public void Draw(string fileName, Point point, byte alpha)
         {
             DX.SetDrawBright(alpha, alpha, alpha);

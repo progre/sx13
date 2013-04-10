@@ -5,7 +5,7 @@ namespace Progressive.Scarlex13.Domains.Entities
 {
     internal class Enemy : Character
     {
-        private const int turnTime = 12;
+        private const int TurnTime = 12;
         private const int Speed = 2;
         private const int SkewSpeed = 1; // 1.4;
 
@@ -44,7 +44,7 @@ namespace Progressive.Scarlex13.Domains.Entities
 
                 case MovingState.TurnLeft:
                 case MovingState.TurnRight:
-                    if (_frame >= turnTime * 4)
+                    if (_frame >= TurnTime * 4)
                     {
                         _movingState = MovingState.Attack;
                         Direction = new Direction8(2);
@@ -72,17 +72,17 @@ namespace Progressive.Scarlex13.Domains.Entities
 
                 case MovingState.TurnLeft:
                     Direction = new Direction8((byte)(
-                        _frame < turnTime ? 8
-                            : _frame < turnTime * 2 ? 7
-                                : _frame < turnTime * 3 ? 4
+                        _frame < TurnTime ? 8
+                            : _frame < TurnTime * 2 ? 7
+                                : _frame < TurnTime * 3 ? 4
                                     : 1));
                     TurnMove();
                     break;
                 case MovingState.TurnRight:
                     Direction = new Direction8((byte)(
-                        _frame < turnTime ? 8
-                            : _frame < turnTime * 2 ? 9
-                                : _frame < turnTime * 3 ? 6
+                        _frame < TurnTime ? 8
+                            : _frame < TurnTime * 2 ? 9
+                                : _frame < TurnTime * 3 ? 6
                                     : 3));
                     TurnMove();
                     break;
@@ -101,16 +101,31 @@ namespace Progressive.Scarlex13.Domains.Entities
                         || Type == EnemyType.Silver)
                     {
                         double radian = GetRadian(Point, playerPoint);
-                        switch (Direction.Value)
+                        Direction = Direction8.FromRadian(radian);
+                        if (Type == EnemyType.Blue
+                            || Type == EnemyType.Silver)
                         {
-
+                            switch (Direction.Value)
+                            {
+                                case 8:
+                                    Direction = new Direction8(2);
+                                    break;
+                                case 7:
+                                case 4:
+                                    Direction = new Direction8(1);
+                                    break;
+                                case 9:
+                                case 6:
+                                    Direction = new Direction8(3);
+                                    break;
+                            }
                         }
                     }
 
                     // 攻撃
                     if (_random.Next(100) == 0)
                         Shot(this, EventArgs.Empty);
-                    if (_frame < turnTime)
+                    if (_frame < TurnTime)
                         break;
                     Turn();
                     break;
@@ -164,7 +179,7 @@ namespace Progressive.Scarlex13.Domains.Entities
         private static double GetRadian(Point source, Point target)
         {
             Point relative = target.Shift(-source.X, -source.Y);
-            return Math.Atan2(relative.X, relative.Y);
+            return Math.Atan2(relative.Y, relative.X);
         }
 
         private enum MovingState
