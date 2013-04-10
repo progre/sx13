@@ -51,6 +51,20 @@ namespace Progressive.Scarlex13.Domains.Entities
                         _frame = 0;
                     }
                     break;
+                case MovingState.Attack:
+                    if (Type == EnemyType.Gold && _random.Next(85) == 0)
+                    {
+                        _vectorX = 0;
+                        _movingState = MovingState.SpinAttack;
+                        _frame = 0;
+                    }
+                    break;
+                case MovingState.SpinAttack:
+                    if (Direction.Value == 2 && _random.Next(10) == 0)
+                    {
+                        _movingState = MovingState.Attack;
+                    }
+                    break;
             }
             switch (_movingState)
             {
@@ -129,6 +143,15 @@ namespace Progressive.Scarlex13.Domains.Entities
                         break;
                     Turn();
                     break;
+
+                case MovingState.SpinAttack:
+                    if (_frame == 0)
+                        Shot(this, EventArgs.Empty);
+                    if (_frame < 3)
+                        break;
+                    Direction = Direction.TurnRight();
+                    _frame = -1;
+                    break;
             }
 
             // 行動範囲制限
@@ -187,7 +210,8 @@ namespace Progressive.Scarlex13.Domains.Entities
             Group,
             TurnLeft,
             TurnRight,
-            Attack
+            Attack,
+            SpinAttack
         }
     }
 

@@ -10,6 +10,9 @@ namespace Progressive.Scarlex13.Domains.ValueObjects
     {
         private static readonly byte[] Directions
             = new byte[] { 8, 9, 6, 3, 2, 1, 4, 7 };
+        private static readonly Dictionary<byte, Direction8> _cache
+            = new Dictionary<byte, Direction8>();
+
         private readonly byte _value;
 
         public Direction8(byte value)

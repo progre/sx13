@@ -105,7 +105,6 @@
     <Compile Include="UserInterfaces\Commons\ValueObjects\Color.cs" />
     <Compile Include="UserInterfaces\Commons\ValueObjects\Size.cs" />
     <Compile Include="UserInterfaces\Games\BackgroundView.cs" />
-    <Compile Include="UserInterfaces\Games\IEumerable.cs" />
     <Compile Include="UserInterfaces\Games\ShootingGameView.cs" />
     <Compile Include="UserInterfaces\Games\ShootingWorldView.cs" />
     <Compile Include="UserInterfaces\Games\Star.cs" />
