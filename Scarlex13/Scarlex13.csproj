@@ -89,6 +89,7 @@
     <Compile Include="Domains\Entities\ShootingGame.cs" />
     <Compile Include="Domains\Entities\ShootingWorld.cs" />
     <Compile Include="Domains\Entities\Shot.cs" />
+    <Compile Include="Domains\ValueObjects\Direction8.cs" />
     <Compile Include="Domains\ValueObjects\Input.cs" />
     <Compile Include="Domains\ValueObjects\Point.cs" />
     <Compile Include="DxDLL.cs" />

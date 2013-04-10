@@ -5,6 +5,7 @@ namespace Progressive.Scarlex13.Domains.Entities
 {
     internal class Enemy : Character
     {
+        private const int turnTime = 12;
         private const int Speed = 2;
         private const int SkewSpeed = 1; // 1.4;
 
@@ -29,26 +30,27 @@ namespace Progressive.Scarlex13.Domains.Entities
             if (Life <= 0)
                 return;
             _frame++;
-            if (_movingState == MovingState.Group)
+            switch (_movingState)
             {
-                if (_random.Next(970) == 0)
-                {
-                    _movingState = _random.Next(2) == 0
-                        ? MovingState.TurnLeft
-                        : MovingState.TurnRight;
-                    _frame = 0;
-                }
-            }
-            const int turnTime = 12;
-            if (_movingState == MovingState.TurnLeft
-                || _movingState == MovingState.TurnRight)
-            {
-                if (_frame >= turnTime * 4)
-                {
-                    _movingState = MovingState.Attack;
-                    Direction = 2;
-                    _frame = 0;
-                }
+                case MovingState.Group:
+                    if (_random.Next(970) == 0)
+                    {
+                        _movingState = _random.Next(2) == 0
+                            ? MovingState.TurnLeft
+                            : MovingState.TurnRight;
+                        _frame = 0;
+                    }
+                    break;
+
+                case MovingState.TurnLeft:
+                case MovingState.TurnRight:
+                    if (_frame >= turnTime * 4)
+                    {
+                        _movingState = MovingState.Attack;
+                        Direction = new Direction8(2);
+                        _frame = 0;
+                    }
+                    break;
             }
             switch (_movingState)
             {
@@ -69,39 +71,62 @@ namespace Progressive.Scarlex13.Domains.Entities
                     break;
 
                 case MovingState.TurnLeft:
-                    Direction = (byte)(
+                    Direction = new Direction8((byte)(
                         _frame < turnTime ? 8
                             : _frame < turnTime * 2 ? 7
                                 : _frame < turnTime * 3 ? 4
-                                    : 1);
+                                    : 1));
                     TurnMove();
                     break;
                 case MovingState.TurnRight:
-                    Direction = (byte)(
+                    Direction = new Direction8((byte)(
                         _frame < turnTime ? 8
                             : _frame < turnTime * 2 ? 9
                                 : _frame < turnTime * 3 ? 6
-                                    : 3);
+                                    : 3));
                     TurnMove();
                     break;
                 case MovingState.Attack:
-                    if (_random.Next(100) == 0)
-                        Shot(this, EventArgs.Empty);
-
+                    // 移動
                     if (_point.X < playerPoint.X)
                         _vectorX += 0.1;
                     else if (_point.X > playerPoint.X)
                         _vectorX -= 0.1;
                     _point.Y += Speed;
                     _point.X += (short)_vectorX;
+
+                    // 旋回
+                    if (Type == EnemyType.Blue
+                        || Type == EnemyType.Red
+                        || Type == EnemyType.Silver)
+                    {
+                        double radian = GetRadian(Point, playerPoint);
+                        switch (Direction)
+                        {
+
+                        }
+                    }
+
+                    // 攻撃
+                    if (_random.Next(100) == 0)
+                        Shot(this, EventArgs.Empty);
+                    if (_frame < turnTime)
+                        break;
+                    Turn();
                     break;
             }
+
+            // 行動範囲制限
             if (_point.Y >= Point.Height)
                 _point.Y -= Point.Height;
             if (_point.X >= Point.Width - 13)
                 _point.X = Point.Width - 13 - 1;
             if (_point.X < 13)
                 _point.X = 13;
+        }
+
+        private void Turn()
+        {
         }
 
         private void TurnMove()
@@ -134,6 +159,12 @@ namespace Progressive.Scarlex13.Domains.Entities
                     _point.Y += SkewSpeed;
                     break;
             }
+        }
+
+        private static double GetRadian(Point source, Point target)
+        {
+            Point relative = target.Shift(-source.X, -source.Y);
+            return Math.Atan2(relative.X, relative.Y);
         }
 
         private enum MovingState

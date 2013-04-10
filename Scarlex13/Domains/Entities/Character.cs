@@ -15,7 +15,7 @@ namespace Progressive.Scarlex13.Domains.Entities
         public Character()
         {
             Life = 1;
-            Direction = 5;
+            Direction = new Direction8(8);
         }
 
         public Point Point
@@ -23,7 +23,7 @@ namespace Progressive.Scarlex13.Domains.Entities
             get { return _point; }
         }
 
-        public byte Direction { get; protected set; }
+        public Direction8 Direction { get; protected set; }
         public int Life { get; private set; }
         public event EventHandler Damaged = (sender, args) => { };
         public event EventHandler Died = (sender, args) => { };
