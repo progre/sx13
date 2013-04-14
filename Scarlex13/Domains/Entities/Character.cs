@@ -24,7 +24,7 @@ namespace Progressive.Scarlex13.Domains.Entities
         }
 
         public Direction8 Direction { get; protected set; }
-        public int Life { get; private set; }
+        public int Life { get; protected set; }
         public event EventHandler Damaged = (sender, args) => { };
         public event EventHandler Died = (sender, args) => { };
         public event EventHandler Determined = (sender, args) => { };

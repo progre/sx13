@@ -23,5 +23,10 @@ namespace Progressive.Scarlex13.Infrastructures
             DX.FileRead_close(handle);
             return Encoding.UTF8.GetString(data);
         }
+
+        public void SaveStages(string data)
+        {
+            System.IO.File.WriteAllText(GetPath("stage.txt"), data);
+        }
     }
 }

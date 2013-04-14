@@ -11,14 +11,14 @@ namespace Progressive.Scarlex13.UserInterfaces
 {
     internal class UserInterface
     {
-        private readonly ShootingGame _game = new ShootingGame();
+        private ShootingGame _game = new ShootingGame();
         private readonly StageEditor _stageEditor = new StageEditor();
         private readonly RealtimeInput _input = new RealtimeInput();
         private readonly Logo _logo = new Logo();
         private readonly Renderer _renderer = new Renderer();
         private readonly SoundManager _soundManager = new SoundManager();
-        private readonly Title _title;
-        private readonly ShootingGameView _view;
+        private Title _title;
+        private ShootingGameView _view;
         private Func<bool> _current;
 
         public UserInterface()
@@ -33,11 +33,15 @@ namespace Progressive.Scarlex13.UserInterfaces
                 Renderer = _renderer,
                 SoundManager = _soundManager
             };
+            _stageEditor = new StageEditor
+            {
+                Renderer = _renderer,
+            };
         }
 
         public void Main()
         {
-            _current = DoGame;
+            _current = DoLogo;
             new Messaging().MessageLoop(() => _current());
         }
 
@@ -58,6 +62,12 @@ namespace Progressive.Scarlex13.UserInterfaces
             if (_title.Start)
             {
                 _current = DoGame;
+                _title = new Title
+                {
+                    Renderer = _renderer,
+                    SoundManager = _soundManager
+                };
+
                 return true;
             }
             if (_title.Edit)
@@ -74,11 +84,26 @@ namespace Progressive.Scarlex13.UserInterfaces
             _game.Update(input);
             _view.Render();
             _renderer.Flip();
+            if (DxLibDLL.DX.CheckHitKey(DxLibDLL.DX.KEY_INPUT_ESCAPE) == DxLibDLL.DX.TRUE)
+            {
+                DxLibDLL.DX.StopSound();
+                DxLibDLL.DX.StopMusic();
+                _current = DoTitle;
+                _game = new ShootingGame();
+                _view = new ShootingGameView(_game)
+                {
+                    Renderer = _renderer,
+                    SoundManager = _soundManager
+                };
+            }
             return true;
         }
 
         private bool DoEditor()
         {
+            _stageEditor.Update(_input.GetInput());
+            _stageEditor.Render();
+            _renderer.Flip();
             return true;
         }
     }

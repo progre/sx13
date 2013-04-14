@@ -54,8 +54,12 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
                 _world.Player.Shot += (sender, args) => _soundManager.Play("shot.ogg");
                 _world.Player.Died += (sender, args) => _soundManager.Play("miss.ogg");
                 EventHandler onEnemyDied = (sender, args) => _soundManager.Play("explosion.ogg");
+                EventHandler onEnemyDamaged = (sender, args) => _soundManager.Play("hit.ogg");
                 foreach (Enemy enemy in _world.Enemies)
+                {
+                    enemy.Damaged += onEnemyDamaged;
                     enemy.Died += onEnemyDied;
+                }
             }
         }
 

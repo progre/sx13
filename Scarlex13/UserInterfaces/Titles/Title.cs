@@ -8,7 +8,7 @@ namespace Progressive.Scarlex13.UserInterfaces.Titles
     {
         private const bool DebugMode = true;
         private const int Scene1 = 10;
-        private const int Scene2 = 80;
+        private const int Scene2 = 100;
         private const int Scene3 = 20;
         private bool _ranking;
         private int _selection;
@@ -115,11 +115,11 @@ namespace Progressive.Scarlex13.UserInterfaces.Titles
         {
             var selectionColor = new Color(0, 255, 255);
             var unselectionColor = new Color(0, 0, 255);
-            renderer.DrawText("GAME START", new Point { X = 354, Y = 400 },
+            renderer.DrawText("GAME START", new Point { X = 320, Y = 380 },
                 _selection == 0 ? selectionColor : unselectionColor);
-            renderer.DrawText("  RECORD  ", new Point { X = 354, Y = 420 },
+            renderer.DrawText("  RECORD  ", new Point { X = 320, Y = 410 },
                 _selection == 1 ? selectionColor : unselectionColor);
-            renderer.DrawText("   EXIT   ", new Point { X = 354, Y = 440 },
+            renderer.DrawText("   EXIT   ", new Point { X = 320, Y = 440 },
                 _selection == 2 ? selectionColor : unselectionColor);
         }
     }

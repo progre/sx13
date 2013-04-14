@@ -5,6 +5,15 @@ namespace Progressive.Scarlex13.Domains.Entities
 {
     internal class Enemy : Character
     {
+        public enum MovingState
+        {
+            Group,
+            TurnLeft,
+            TurnRight,
+            Attack,
+            SpinAttack
+        }
+
         private const int TurnTime = 12;
         private const int Speed = 2;
         private const int SkewSpeed = 1; // 1.4;
@@ -12,7 +21,6 @@ namespace Progressive.Scarlex13.Domains.Entities
         public readonly EnemyType Type;
         private readonly Random _random;
         private int _frame = -1;
-        private MovingState _movingState;
         private double _vectorX;
 
         public Enemy(EnemyType type, Point point, Random random)
@@ -20,7 +28,11 @@ namespace Progressive.Scarlex13.Domains.Entities
             Type = type;
             _point = point;
             _random = random;
+            if (type == EnemyType.Silver || type == EnemyType.Gold)
+                Life = 2;
         }
+
+        public MovingState State { get; private set; }
 
         public event EventHandler Shot;
 
@@ -30,12 +42,12 @@ namespace Progressive.Scarlex13.Domains.Entities
             if (Life <= 0)
                 return;
             _frame++;
-            switch (_movingState)
+            switch (State)
             {
                 case MovingState.Group:
-                    if (_random.Next(970) == 0)
+                    if (_random.Next(400) == 0)
                     {
-                        _movingState = _random.Next(2) == 0
+                        State = _random.Next(2) == 0
                             ? MovingState.TurnLeft
                             : MovingState.TurnRight;
                         _frame = 0;
@@ -46,7 +58,7 @@ namespace Progressive.Scarlex13.Domains.Entities
                 case MovingState.TurnRight:
                     if (_frame >= TurnTime * 4)
                     {
-                        _movingState = MovingState.Attack;
+                        State = MovingState.Attack;
                         Direction = new Direction8(2);
                         _frame = 0;
                     }
@@ -55,18 +67,18 @@ namespace Progressive.Scarlex13.Domains.Entities
                     if (Type == EnemyType.Gold && _random.Next(85) == 0)
                     {
                         _vectorX = 0;
-                        _movingState = MovingState.SpinAttack;
+                        State = MovingState.SpinAttack;
                         _frame = 0;
                     }
                     break;
                 case MovingState.SpinAttack:
                     if (Direction.Value == 2 && _random.Next(10) == 0)
                     {
-                        _movingState = MovingState.Attack;
+                        State = MovingState.Attack;
                     }
                     break;
             }
-            switch (_movingState)
+            switch (State)
             {
                 case MovingState.Group:
                     int myFrame = _frame % 140;
@@ -85,19 +97,23 @@ namespace Progressive.Scarlex13.Domains.Entities
                     break;
 
                 case MovingState.TurnLeft:
-                    Direction = new Direction8((byte)(
-                        _frame < TurnTime ? 8
-                            : _frame < TurnTime * 2 ? 7
-                                : _frame < TurnTime * 3 ? 4
-                                    : 1));
+                    Direction = new Direction8((byte)(_frame < TurnTime
+                        ? 8
+                        : _frame < TurnTime * 2
+                            ? 7
+                            : _frame < TurnTime * 3
+                                ? 4
+                                : 1));
                     TurnMove();
                     break;
                 case MovingState.TurnRight:
-                    Direction = new Direction8((byte)(
-                        _frame < TurnTime ? 8
-                            : _frame < TurnTime * 2 ? 9
-                                : _frame < TurnTime * 3 ? 6
-                                    : 3));
+                    Direction = new Direction8((byte)(_frame < TurnTime
+                        ? 8
+                        : _frame < TurnTime * 2
+                            ? 9
+                            : _frame < TurnTime * 3
+                                ? 6
+                                : 3));
                     TurnMove();
                     break;
                 case MovingState.Attack:
@@ -203,15 +219,6 @@ namespace Progressive.Scarlex13.Domains.Entities
         {
             Point relative = target.Shift(-source.X, -source.Y);
             return Math.Atan2(relative.Y, relative.X);
-        }
-
-        private enum MovingState
-        {
-            Group,
-            TurnLeft,
-            TurnRight,
-            Attack,
-            SpinAttack
         }
     }
 

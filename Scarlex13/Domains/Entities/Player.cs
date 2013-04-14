@@ -19,18 +19,16 @@ namespace Progressive.Scarlex13.Domains.Entities
             if (Life <= 0)
                 return;
             byte direction;
-            bool shot;
             if (_firstTime)
             {
                 direction = input.Direction;
-                shot = input.Shot;
                 _firstTime = false;
             }
             else
             {
                 direction = input.DirectionToggled ? input.Direction : (byte)0;
-                shot = input.ShotToggled && input.Shot;
             }
+            bool shot = input.ShotToggled && input.Shot;
 
             if (direction > 0)
                 Direction = new Direction8(direction);

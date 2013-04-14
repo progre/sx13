@@ -40,6 +40,14 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
             if (!_game.Cleared)
             {
                 _worldView.Render(_game.World);
+                if (_game.Time <= TimeSpan.FromTicks(0))
+                {
+                    RenderTimeup(_game.Score, _game.TotalHitRatioPercent);
+                }
+                else if (_game.Failed)
+                {
+                    RenderFailed();
+                }
             }
             else
             {
@@ -60,7 +68,7 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
             Renderer.DrawText(game.Time.ToString("mm\\'ss\\\"ff"), new Point(573, 120), new Color(255, 255, 255));
             Renderer.DrawText(game.Score.ToString("000000"), new Point(603, 220), new Color(255, 255, 255));
             Renderer.DrawText((game.StageNo + 1).ToString("00"), new Point(633, 320), new Color(255, 255, 255));
-            Renderer.DrawText("00", new Point(633, 420), new Color(255, 255, 255));
+            Renderer.DrawText(game.MissCount.ToString("00"), new Point(633, 420), new Color(255, 255, 255));
         }
 
         private void RenderStageClear(int stageNo, int hitRatio, int bonus)
@@ -73,6 +81,21 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
                 Renderer.DrawText("BONUS TIME +" + bonus + "sec.",
                     new Point(80, 340), new Color(0, 255, 0));
             Renderer.DrawText("WARP TO NEXT LEVEL!!", new Point(60, 420), new Color(0, 255, 255));
+        }
+
+        private void RenderFailed()
+        {
+            Renderer.DrawText("TIME -10 sec.", new Point(130, 230), new Color(255, 0, 0));
+        }
+
+        private void RenderTimeup(int score, int hitRatio)
+        {
+            Renderer.DrawText("TIME UP", new Point(190, 230), new Color(255, 0, 0));
+            Renderer.DrawText("SCORE =", new Point(170, 350), new Color(255, 255, 0));
+            Renderer.DrawText("        " + score, new Point(170, 350), new Color(255, 255, 255));
+            Renderer.DrawText("TOTAL HIT RATIO =", new Point(60, 400), new Color(255, 255, 0));
+            Renderer.DrawText("                  " + hitRatio + "%",
+                new Point(60, 400), new Color(255, 255, 255));
         }
     }
 }

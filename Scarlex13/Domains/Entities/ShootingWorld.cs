@@ -30,7 +30,7 @@ namespace Progressive.Scarlex13.Domains.Entities
                         ((Enemy)sender).Point, enemy.Type == EnemyType.Silver));
                 enemy.Determined += (sender, args) =>
                 {
-                    if (_enemies.All(x => x.Life == -1))
+                    if (_player.Life > 0 && _enemies.All(x => x.Life == -1))
                     {
                         Cleared(this, EventArgs.Empty);
                     }
