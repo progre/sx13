@@ -17,6 +17,11 @@ namespace Progressive.Scarlex13.UserInterfaces.Titles
         private int _time = -1;
         private bool _enabledEx;
 
+        public Title()
+        {
+            _backgroundView.Extend();
+        }
+
         public Renderer Renderer { private get; set; }
         public SoundManager SoundManager { private get; set; }
         public bool Start { get; private set; }

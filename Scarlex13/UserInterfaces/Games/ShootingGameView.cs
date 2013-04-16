@@ -42,7 +42,6 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
             {
                 _worpSound = false;
                 _worldView.Render(_game.World);
-                RenderTimeup(_game.Score, _game.TotalHitRatioPercent);
                 if (_game.Time <= TimeSpan.FromTicks(0))
                 {
                     RenderTimeup(_game.Score, _game.TotalHitRatioPercent);
@@ -106,13 +105,13 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
             Renderer.DrawText("TIME UP",
                 new Point(185, 200), new Color(255, 0, 0));
             Renderer.DrawText("SCORE =",
-                new Point(125, 270), new Color(255, 255, 0));
+                new Point(115, 270), new Color(255, 255, 0));
             Renderer.DrawText("        " + score,
-                new Point(125, 270), new Color(255, 255, 255));
+                new Point(115, 270), new Color(255, 255, 255));
             Renderer.DrawText("TOTAL HIT RATIO =",
-                new Point(55, 300), new Color(255, 255, 0));
+                new Point(45, 300), new Color(255, 255, 0));
             Renderer.DrawText("                  " + hitRatio + "%",
-                new Point(55, 300), new Color(255, 255, 255));
+                new Point(45, 300), new Color(255, 255, 255));
             Renderer.DrawText(" PRESS [ ] KEY TO ",
                 new Point(75, 370), new Color(255, 255, 255));
             Renderer.DrawText("        T",
