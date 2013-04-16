@@ -11,7 +11,7 @@ namespace Progressive.Scarlex13.UserInterfaces
 {
     internal class UserInterface
     {
-        private ShootingGame _game = new ShootingGame();
+        private ShootingGame _game;
         private readonly StageEditor _stageEditor = new StageEditor();
         private readonly RealtimeInput _input = new RealtimeInput();
         private readonly Logo _logo = new Logo();
@@ -23,11 +23,6 @@ namespace Progressive.Scarlex13.UserInterfaces
 
         public UserInterface()
         {
-            _view = new ShootingGameView(_game)
-            {
-                Renderer = _renderer,
-                SoundManager = _soundManager
-            };
             _title = new Title
             {
                 Renderer = _renderer,
@@ -61,6 +56,12 @@ namespace Progressive.Scarlex13.UserInterfaces
             _renderer.Flip();
             if (_title.Start)
             {
+                _game = new ShootingGame(_title.IsEx);
+                _view = new ShootingGameView(_game)
+                {
+                    Renderer = _renderer,
+                    SoundManager = _soundManager
+                };
                 _current = DoGame;
                 _title = new Title
                 {
@@ -89,12 +90,6 @@ namespace Progressive.Scarlex13.UserInterfaces
                 DxLibDLL.DX.StopSound();
                 DxLibDLL.DX.StopMusic();
                 _current = DoTitle;
-                _game = new ShootingGame();
-                _view = new ShootingGameView(_game)
-                {
-                    Renderer = _renderer,
-                    SoundManager = _soundManager
-                };
             }
             return true;
         }

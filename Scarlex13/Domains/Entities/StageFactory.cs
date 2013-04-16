@@ -73,7 +73,7 @@ namespace Progressive.Scarlex13.Domains.Entities
             _stages = stages;
         }
 
-        public IReadOnlyList<Enemy> GetEnemies(int stageNo)
+        public IEnumerable<Enemy> GetEnemies(int stageNo)
         {
             var rnd = new Random();
             return _stages[stageNo]

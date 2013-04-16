@@ -7,7 +7,7 @@ namespace Progressive.Scarlex13.Domains.Entities
     {
         public Direction8 Direction;
         private Point _point;
-        private bool _homing;
+        private readonly bool _homing;
         private int _homingState;
         private int _frame;
 
@@ -16,6 +16,11 @@ namespace Progressive.Scarlex13.Domains.Entities
             Direction = direction;
             _point = point;
             _homing = homing;
+        }
+
+        public bool Homing
+        {
+            get { return _homing; }
         }
 
         public Point Point
@@ -32,7 +37,7 @@ namespace Progressive.Scarlex13.Domains.Entities
                     case 0:
                         if (_point.Y >= playerPoint.Y)
                         {
-                            Direction = new Direction8(2);
+                            Direction = new Direction8(5);
                             _homingState = 1;
                         }
                         break;

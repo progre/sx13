@@ -8,6 +8,7 @@ namespace Progressive.Scarlex13.Infrastructures
         private byte _prevDirection = 5;
         private bool _prevShot;
         private bool _prevPause;
+        private bool _prevTweet;
 
         public Input GetInput()
         {
@@ -22,14 +23,19 @@ namespace Progressive.Scarlex13.Infrastructures
             var nextPause = (flag & DX.PAD_INPUT_2) > 0;
             var pauseToggled = _prevPause != nextPause;
 
+            var nextTweet = DX.CheckHitKey(DX.KEY_INPUT_T) == DX.TRUE;
+            var tweetToggled = _prevTweet != nextTweet;
+
             var nextInput = new Input(
                 nextDirection, directionChanged,
                 nextShot, shotToggled,
-                nextPause, pauseToggled);
+                nextPause, pauseToggled,
+                nextTweet, tweetToggled);
 
             _prevDirection = nextDirection;
             _prevShot = nextShot;
             _prevPause = nextPause;
+            _prevTweet = nextTweet;
             return nextInput;
         }
 

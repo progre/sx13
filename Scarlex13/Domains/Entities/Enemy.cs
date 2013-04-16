@@ -14,10 +14,12 @@ namespace Progressive.Scarlex13.Domains.Entities
             SpinAttack
         }
 
+        private const int VectorMax = 4;
         private const int TurnTime = 12;
         private const int Speed = 2;
         private const int SkewSpeed = 1; // 1.4;
 
+        private bool _go;
         public readonly EnemyType Type;
         private readonly Random _random;
         private int _frame = -1;
@@ -36,6 +38,11 @@ namespace Progressive.Scarlex13.Domains.Entities
 
         public event EventHandler Shot;
 
+        public void Go()
+        {
+            _go = true;
+        }
+
         public void Update(Point playerPoint)
         {
             base.Update();
@@ -45,7 +52,7 @@ namespace Progressive.Scarlex13.Domains.Entities
             switch (State)
             {
                 case MovingState.Group:
-                    if (_random.Next(400) == 0)
+                    if (_go)
                     {
                         State = _random.Next(2) == 0
                             ? MovingState.TurnLeft
@@ -119,9 +126,13 @@ namespace Progressive.Scarlex13.Domains.Entities
                 case MovingState.Attack:
                     // 移動
                     if (_point.X < playerPoint.X)
-                        _vectorX += 0.1;
+                        _vectorX += Type == EnemyType.Blue ? 0.2 : 0.1;
                     else if (_point.X > playerPoint.X)
-                        _vectorX -= 0.1;
+                        _vectorX -= Type == EnemyType.Blue ? 0.2 : 0.1;
+                    if (_vectorX > VectorMax)
+                        _vectorX = VectorMax;
+                    else if (_vectorX < -VectorMax)
+                        _vectorX = -VectorMax;
                     _point.Y += Speed;
                     _point.X += (short)_vectorX;
 
@@ -174,9 +185,15 @@ namespace Progressive.Scarlex13.Domains.Entities
             if (_point.Y >= Point.Height)
                 _point.Y -= Point.Height;
             if (_point.X >= Point.Width - 13)
+            {
                 _point.X = Point.Width - 13 - 1;
+                _vectorX = 0;
+            }
             if (_point.X < 13)
+            {
                 _point.X = 13;
+                _vectorX = 0;
+            }
         }
 
         private void Turn()
@@ -224,6 +241,7 @@ namespace Progressive.Scarlex13.Domains.Entities
 
     public enum EnemyType
     {
+        None,
         Green,
         Blue,
         Red,

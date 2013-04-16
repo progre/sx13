@@ -10,10 +10,12 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
 {
     internal class ShootingWorldView
     {
-        private readonly BackgroundView _backgroundView = new BackgroundView();
+        private readonly BackgroundView _backgroundView = new BackgroundView(true);
 
         private readonly Dictionary<Character, int> _dieFrame
             = new Dictionary<Character, int>();
+
+        private readonly HashSet<Enemy> _damagedEnemies = new HashSet<Enemy>(); 
 
         private readonly ShootingWorld _world;
         private Renderer _renderer;
@@ -28,6 +30,8 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
             foreach (Enemy enemy in world.Enemies)
             {
                 _dieFrame.Add(enemy, 0);
+                enemy.Damaged += (sender, args)
+                    => _damagedEnemies.Add((Enemy)sender);
             }
 
             world.Cleared += (sender, args) =>
@@ -77,8 +81,6 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
         public void RenderWarp(ShootingWorld world)
         {
             _backgroundView.Render();
-            if (_warpMove == 0)
-                _soundManager.Play("warp.ogg");
             _warpMove -= 20;
             Renderer.DrawClip("remilia.png", new Point(33, 98), new Size(33, 34),
                 GetUnitPoint(world.Player.Point.Shift(0, _warpMove)));
@@ -121,31 +123,35 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
             {
                 Point point = new Point(
                             (short)(shot.Point.X - 1),shot.Point.Y);
+                var shotFile = shot.Homing ? "shot2.png" : "shot.png";
                 switch (shot.Direction.Value)
                 {
                     case 8:
-                        Renderer.Draw("shot.png", point);
+                        Renderer.Draw(shotFile, point);
                         break;
                     case 9:
-                        Renderer.DrawRotate("shot.png", point, Math.PI / 4);
+                        Renderer.DrawRotate(shotFile, point, Math.PI / 4);
                         break;
                     case 6:
-                        Renderer.DrawRotate("shot.png", point, Math.PI / 2);
+                        Renderer.DrawRotate(shotFile, point, Math.PI / 2);
                         break;
                     case 3:
-                        Renderer.DrawRotate("shot.png", point, Math.PI * 3 / 4);
+                        Renderer.DrawRotate(shotFile, point, Math.PI * 3 / 4);
                         break;
                     case 2:
-                        Renderer.DrawRotate("shot.png", point, Math.PI);
+                        Renderer.DrawRotate(shotFile, point, Math.PI);
                         break;
                     case 1:
-                        Renderer.DrawRotate("shot.png", point, Math.PI * 5 / 4);
+                        Renderer.DrawRotate(shotFile, point, Math.PI * 5 / 4);
                         break;
                     case 4:
-                        Renderer.DrawRotate("shot.png", point, Math.PI * 3 / 2);
+                        Renderer.DrawRotate(shotFile, point, Math.PI * 3 / 2);
                         break;
                     case 7:
-                        Renderer.DrawRotate("shot.png", point, Math.PI * 7 / 4);
+                        Renderer.DrawRotate(shotFile, point, Math.PI * 7 / 4);
+                        break;
+                    case 5:
+                        Renderer.DrawRotate(shotFile, point, new Random().NextDouble() * Math.PI * 2);
                         break;
                     default:
                         break;
@@ -157,41 +163,43 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
         private void RenderEnemy(Enemy enemy)
         {
             Tuple<string, int, int> resource = ToResource(enemy.Type);
+            Point src;
             switch (enemy.Direction.Value)
             {
                 case 5:
                 case 8:
-                    Renderer.DrawClip(
-                        resource.Item1,
-                        new Point((short)resource.Item2, (short)(resource.Item3 * 3)),
-                        new Size((short)resource.Item2, (short)resource.Item3),
-                        GetUnitPoint(enemy.Point, resource.Item2, resource.Item3));
+                    src = new Point((short)resource.Item2, (short)(resource.Item3 * 3));
                     break;
                 case 7:
                 case 4:
                 case 1:
-                    Renderer.DrawClip(
-                        resource.Item1,
-                        new Point((short)resource.Item2, (short)resource.Item3),
-                        new Size((short)resource.Item2, (short)resource.Item3),
-                        GetUnitPoint(enemy.Point, resource.Item2, resource.Item3));
+                    src = new Point((short)resource.Item2, (short)resource.Item3);
                     break;
                 case 9:
                 case 6:
                 case 3:
-                    Renderer.DrawClip(
-                        resource.Item1,
-                        new Point((short)resource.Item2, (short)(resource.Item3 * 2)),
-                        new Size((short)resource.Item2, (short)resource.Item3),
-                        GetUnitPoint(enemy.Point, resource.Item2, resource.Item3));
+                    src = new Point((short)resource.Item2, (short)(resource.Item3 * 2));
                     break;
-                case 2:
-                    Renderer.DrawClip(
-                        resource.Item1,
-                        new Point((short)resource.Item2, 0),
-                        new Size((short)resource.Item2, (short)resource.Item3),
-                        GetUnitPoint(enemy.Point, resource.Item2, resource.Item3));
+                default:
+                    src = new Point((short)resource.Item2, 0);
                     break;
+            }
+            if (_damagedEnemies.Contains(enemy))
+            {
+                Renderer.DrawClipWhite(
+                    resource.Item1,
+                    src,
+                    new Size((short)resource.Item2, (short)resource.Item3),
+                    GetUnitPoint(enemy.Point, resource.Item2, resource.Item3));
+                _damagedEnemies.Remove(enemy);
+            }
+            else
+            {
+                Renderer.DrawClip(
+                    resource.Item1,
+                    src,
+                    new Size((short)resource.Item2, (short)resource.Item3),
+                    GetUnitPoint(enemy.Point, resource.Item2, resource.Item3));
             }
         }
 

@@ -8,15 +8,16 @@ namespace Progressive.Scarlex13.Domains.Entities
 {
     internal class ShootingWorld
     {
-        private readonly IReadOnlyList<Enemy> _enemies;
+        private readonly IEnumerable<Enemy> _enemies;
         private readonly Player _player = new Player();
         private readonly List<Shot> _playerShots = new List<Shot>(7);
         private readonly List<Shot> _shots = new List<Shot>();
+        private readonly Random _random = new Random();
 
         public event EventHandler Cleared;
         public event EventHandler Failed;
 
-        public ShootingWorld(IReadOnlyList<Enemy> enemies)
+        public ShootingWorld(IEnumerable<Enemy> enemies)
         {
             _enemies = enemies;
             _player.Shot += (sender, args) =>
@@ -43,7 +44,7 @@ namespace Progressive.Scarlex13.Domains.Entities
             get { return _player; }
         }
 
-        public IReadOnlyList<Enemy> Enemies
+        public IEnumerable<Enemy> Enemies
         {
             get { return _enemies; }
         }
@@ -55,7 +56,7 @@ namespace Progressive.Scarlex13.Domains.Entities
 
         public int AllHitCount
         {
-            get 
+            get
             {
                 return _enemies.Sum(
                     x => x.Type == EnemyType.Silver
@@ -67,6 +68,14 @@ namespace Progressive.Scarlex13.Domains.Entities
         public void Update(Input input)
         {
             Player.Update(input, _playerShots.Count < 7);
+            if (_random.Next(50) == 0)
+            {
+                var list = _enemies
+                    .Where(x => x.State == Enemy.MovingState.Group)
+                    .Where(x => x.Life > 0).ToArray();
+                if (list.Length > 0)
+                    list.ElementAt(_random.Next(list.Length)).Go();
+            }
             foreach (Enemy enemy in _enemies)
             {
                 enemy.Update(_player.Point);

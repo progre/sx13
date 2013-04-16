@@ -10,16 +10,22 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
     {
         private readonly List<Star> _stars;
 
-        public BackgroundView()
+        public BackgroundView(bool game)
         {
             _stars = new List<Star>();
             var r = new Random();
             for (int i = 0; i < 50; i++)
             {
                 const int light = 200;
+                Point point;
+                if (game)
+                    point = new Point((short)r.Next(Point.Width),
+                        (short)r.Next(Point.Height));
+                else
+                    point = new Point((short)r.Next(800),
+                        (short)r.Next(500));
                 _stars.Add(new Star(
-                    new Point((short)r.Next(Point.Width),
-                        (short)r.Next(Point.Height)),
+                    point,
                     r.Next(1, 3),
                     new Color(
                         (byte)r.Next(light), (byte)r.Next(light), (byte)r.Next(light))));

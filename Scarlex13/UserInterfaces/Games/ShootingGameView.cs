@@ -8,6 +8,7 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
 {
     internal class ShootingGameView
     {
+        private bool _worpSound;
         private readonly ShootingGame _game;
         private bool _playedMusic;
         private ShootingWorldView _worldView;
@@ -39,7 +40,9 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
             }
             if (!_game.Cleared)
             {
+                _worpSound = false;
                 _worldView.Render(_game.World);
+                RenderTimeup(_game.Score, _game.TotalHitRatioPercent);
                 if (_game.Time <= TimeSpan.FromTicks(0))
                 {
                     RenderTimeup(_game.Score, _game.TotalHitRatioPercent);
@@ -51,6 +54,13 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
             }
             else
             {
+                if (!_worpSound)
+                {
+                    SoundManager.Play("warp.ogg");
+                    if (_game.BonusTime > 0)
+                        SoundManager.Play("warp2.ogg");
+                    _worpSound = true;
+                }
                 _worldView.RenderWarp(_game.World);
                 RenderStageClear(_game.StageNo, _game.HitRatioPercent, _game.BonusTime);
             }
@@ -60,14 +70,17 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
         {
             Renderer.DrawText("SCARLEX   ", new Point(553, 20), new Color(255, 0, 0));
             Renderer.DrawText("       '13", new Point(553, 20), new Color(0, 160, 0));
-            Renderer.DrawText("TIME", new Point(613, 80), new Color(255, 0, 0));
-            Renderer.DrawText("SCORE", new Point(603, 180), new Color(255, 0, 0));
+            Renderer.DrawText("TIME",
+                new Point(613, 80), new Color(255, 0, 0));
+            Renderer.DrawText(game.Time.ToString("mm\\'ss\\\"ff"),
+                new Point(573, 120), new Color(255, 255, 255));
+            Renderer.DrawText("SCORE",
+                new Point(603, 180), new Color(255, 0, 0));
+            Renderer.DrawText(game.Score.ToString("000000"),
+                new Point(593, 220), new Color(255, 255, 255));
             Renderer.DrawText("LEVEL", new Point(603, 280), new Color(255, 0, 0));
-            Renderer.DrawText("MISS", new Point(613, 380), new Color(255, 0, 0));
-
-            Renderer.DrawText(game.Time.ToString("mm\\'ss\\\"ff"), new Point(573, 120), new Color(255, 255, 255));
-            Renderer.DrawText(game.Score.ToString("000000"), new Point(603, 220), new Color(255, 255, 255));
             Renderer.DrawText((game.StageNo + 1).ToString("00"), new Point(633, 320), new Color(255, 255, 255));
+            Renderer.DrawText("MISS", new Point(613, 380), new Color(255, 0, 0));
             Renderer.DrawText(game.MissCount.ToString("00"), new Point(633, 420), new Color(255, 255, 255));
         }
 
@@ -90,12 +103,24 @@ namespace Progressive.Scarlex13.UserInterfaces.Games
 
         private void RenderTimeup(int score, int hitRatio)
         {
-            Renderer.DrawText("TIME UP", new Point(190, 230), new Color(255, 0, 0));
-            Renderer.DrawText("SCORE =", new Point(170, 350), new Color(255, 255, 0));
-            Renderer.DrawText("        " + score, new Point(170, 350), new Color(255, 255, 255));
-            Renderer.DrawText("TOTAL HIT RATIO =", new Point(60, 400), new Color(255, 255, 0));
+            Renderer.DrawText("TIME UP",
+                new Point(185, 200), new Color(255, 0, 0));
+            Renderer.DrawText("SCORE =",
+                new Point(125, 270), new Color(255, 255, 0));
+            Renderer.DrawText("        " + score,
+                new Point(125, 270), new Color(255, 255, 255));
+            Renderer.DrawText("TOTAL HIT RATIO =",
+                new Point(55, 300), new Color(255, 255, 0));
             Renderer.DrawText("                  " + hitRatio + "%",
-                new Point(60, 400), new Color(255, 255, 255));
+                new Point(55, 300), new Color(255, 255, 255));
+            Renderer.DrawText(" PRESS [ ] KEY TO ",
+                new Point(75, 370), new Color(255, 255, 255));
+            Renderer.DrawText("        T",
+                new Point(75, 370), new Color(255, 255, 0));
+            Renderer.DrawText("TWEET YOUR SCORE!!",
+                new Point(75, 400), new Color(255, 255, 255));
+            Renderer.DrawText("PRESS ESC TO QUIT",
+                new Point(85, 470), new Color(255, 255, 0));
         }
     }
 }

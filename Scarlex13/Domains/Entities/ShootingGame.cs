@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Progressive.Scarlex13.Domains.ValueObjects;
 using Progressive.Scarlex13.Infrastructures;
+using System.Diagnostics;
 
 namespace Progressive.Scarlex13.Domains.Entities
 {
@@ -10,18 +11,23 @@ namespace Progressive.Scarlex13.Domains.Entities
         private const int ClearedTime = 50;
         private const int FailedTime = 50;
 
-        private readonly StageFactory _stageFactory
-            = StageFactory.FromData(new File().GetStages());
+        private readonly bool _isEx;
+        private readonly StageFactory _stageFactory;
 
         private int _intervalFrame = -1;
         private bool _newWorld = true;
         private int _secondTimeKeeper;
         private int _allHitCount = 0;
         private int _shotCountHistory = 0;
+        private bool _allClear;
 
-        public ShootingGame()
+        public ShootingGame(bool isEx)
         {
+            _isEx = isEx;
             Time = new TimeSpan(0, 3, 0);
+            _stageFactory = StageFactory.FromData(isEx
+                ? new File().GetExtraStages()
+                : new File().GetNormalStages());
         }
 
         public bool Cleared { get; private set; }
@@ -73,6 +79,16 @@ namespace Progressive.Scarlex13.Domains.Entities
             if (Time <= TimeSpan.FromTicks(0))
             {
                 Time = TimeSpan.FromTicks(0);
+                if (input.TweetToggled && input.Tweet)
+                {
+                    var text =
+                        (_isEx ? "SCARLEX'13 EXTRA" : "SCARLEX'13")
+                        + " Score: " + Score
+                        + " Level: " + (_allClear ? "★" : "" + StageNo)
+                        + " Ratio: " + TotalHitRatioPercent
+                        + "% Miss: " + MissCount;
+                    Process.Start("https://twitter.com/intent/tweet?text=" + Uri.EscapeUriString(text) + "&hashtags=scarlex13");
+                }
                 return;
             }
             if (_newWorld)
@@ -106,7 +122,12 @@ namespace Progressive.Scarlex13.Domains.Entities
             _intervalFrame++;
             if (Cleared && _intervalFrame > ClearedTime)
             {
-                if (StageNo < _stageFactory.LastStage)
+                if (StageNo == _stageFactory.LastStage)
+                {
+                    _allClear = true;
+                    new File().SaveExFlag();
+                }
+                else
                     StageNo++;
                 _newWorld = true;
                 return;

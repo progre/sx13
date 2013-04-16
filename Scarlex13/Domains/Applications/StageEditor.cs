@@ -2,6 +2,7 @@
 using Progressive.Scarlex13.Domains.Entities;
 using Progressive.Scarlex13.Domains.ValueObjects;
 using Progressive.Scarlex13.Infrastructures;
+using Progressive.Scarlex13.UserInterfaces.Commons.ValueObjects;
 using Progressive.Scarlex13.UserInterfaces.Games;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Progressive.Scarlex13.Domains.Applications
     internal class StageEditor
     {
         private readonly StageFactory _stageFactory
-            = StageFactory.FromData(new File().GetStages());
+            = StageFactory.FromData(new File().GetExtraStages());
         private int _stageNo = -1;
         private ShootingWorld _world;
         private ShootingWorldView _view;
@@ -115,6 +116,14 @@ namespace Progressive.Scarlex13.Domains.Applications
         {
             if (_view != null)
                 _view.Render(_world);
+            if (_stageNo < 0 || _stageFactory.LastStage < _stageNo)
+                return;
+            Renderer.DrawText(
+                "総ライフ: " + _stageFactory.GetEnemies(_stageNo).Sum(x => x.Life),
+                new Point(0, 0), new Color(255, 255, 255));
+            Renderer.DrawText(
+                "総スコア: " + _stageFactory.GetEnemies(_stageNo).Sum(x => (int)x.Type),
+                new Point(0, 100), new Color(255, 255, 255));
         }
 
         private Point MergePoint(int x, int y)

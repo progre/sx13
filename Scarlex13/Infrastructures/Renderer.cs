@@ -15,6 +15,7 @@ namespace Progressive.Scarlex13.Infrastructures
         {
             DX.ChangeWindowMode(DX.TRUE);
             DX.SetGraphMode(800, 500, 32);
+            DX.SetMainWindowText("SCARLEX'13");
             if (DX.DxLib_Init() < 0)
                 throw new Exception();
             DX.SetDrawScreen(DX.DX_SCREEN_BACK);
@@ -120,6 +121,33 @@ namespace Progressive.Scarlex13.Infrastructures
 
             DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
                 _handles[fileName], DX.TRUE, DX.FALSE);
+        }
+
+        public void DrawClipWhite(string fileName, Point src, Size size, Point point)
+        {
+            if (!_handles.ContainsKey(fileName))
+                Load(fileName);
+
+            DX.SetDrawBlendMode(DX.DX_BLENDMODE_ADD, 255);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.DrawRectGraph(point.X, point.Y, src.X, src.Y, size.Width, size.Height,
+                _handles[fileName], DX.TRUE, DX.FALSE);
+            DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
         }
 
         public void DrawText(string text, Point point, Color color)
